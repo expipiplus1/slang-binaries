@@ -22,7 +22,7 @@
         in {
           static = pkgs.runCommand "clang-format" { } ''
             mkdir -p $out/bin
-            cp ${pkgs.pkgsStatic.llvmPackages_18.clang-unwrapped}/bin/clang-format $out/bin/
+            cp ${pkgs.pkgsStatic.llvmPackages_17.clang-unwrapped}/bin/clang-format $out/bin/
           '';
           cross = forall crossSystems (crossSystem:
             with pkgs.pkgsCross.${crossSystem};
@@ -30,7 +30,7 @@
               clang = if targetPlatform.isWindows then
               # For windows targets, use the native win32 threading model to
               # avoid having to package mcfgthreads.dll
-                llvmPackages_18.clang-unwrapped.override {
+                llvmPackages_17.clang-unwrapped.override {
                   stdenv = overrideCC stdenv (stdenv.cc.override (old: {
                     cc = old.cc.override {
                       threadsCross = {
@@ -41,7 +41,7 @@
                   }));
                 }
               else
-                pkgsStatic.llvmPackages_18.clang-unwrapped;
+                pkgsStatic.llvmPackages_17.clang-unwrapped;
             in pkgs.runCommand "clang-format" { } ''
               mkdir -p $out/bin
               cp ${clang}/bin/clang-format${
